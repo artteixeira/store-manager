@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
 
-const { productModel } = require('../../../src/models');
+const { productsModel } = require('../../../src/models');
 const { productIdFromDB, productIdFromModel } = require('../mocks/products.mock');
 
 describe('Realiando Testes - PRODUCT MODEL:', function () {
@@ -13,7 +13,7 @@ describe('Realiando Testes - PRODUCT MODEL:', function () {
       name: 'Boladinho',
     };
 
-    const insertId = await productModel.insert(inputData);
+    const insertId = await productsModel.insert(inputData);
 
     expect(insertId).to.be.a('number');
     expect(insertId).to.equal(productIdFromModel);

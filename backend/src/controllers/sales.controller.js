@@ -14,7 +14,15 @@ const filterSale = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const insertNewSale = async (req, res) => {
+  const { body } = req;
+  const { status, data } = await salesService.insertNewSale(body);
+
+  return res.status(mapStatusHTTP(status)).json(data);
+};
+
 module.exports = {
   showAllSales,
   filterSale,
+  insertNewSale,
 };

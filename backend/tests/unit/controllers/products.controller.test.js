@@ -5,7 +5,7 @@ const sinonChai = require('sinon-chai');
 const { expect } = require('chai');
 
 chai.use(sinonChai);
-const { productService } = require('../../../src/services');
+const { productsService } = require('../../../src/services');
 const { productsController } = require('../../../src/controllers');
 const { productFromModel, productFromServiceCreated } = require('../mocks/products.mock');
 
@@ -25,7 +25,7 @@ describe('Realizando Testes - PRODUCTS CONTROLLER:', function () {
   });
 
   it('Cadastrando um novo produto com sucesso - status 201', async function () {
-    sinon.stub(productService, 'insertNewProduct').resolves(productFromServiceCreated);
+    sinon.stub(productsService, 'insertNewProduct').resolves(productFromServiceCreated);
     const req = {
       body: { name: 'pamonha de carne' },
     };

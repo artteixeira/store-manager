@@ -1,32 +1,48 @@
-const { productModel } = require('../models');
+const { productsModel } = require('../models');
 const statusMap = require('../utils/statusMap');
 const {
 validateNewProduct,
 } = require('./validations/validationsInputValues');
 
 const findAll = async () => {
-  const products = await productModel.findAll();
+  const products = await productsModel.findAll();
 
   return { status: statusMap.successful, data: products };
 };
 
 const findById = async (productId) => {
-  const product = await productModel.findById(productId);
+  const product = await productsModel.findById(productId);
   if (!product) return { status: statusMap.notfound, data: { message: 'Product not found' } };
   return { status: statusMap.successful, data: product };
 };
 
-const insertNewProduct = async (name) => {
+const insertNewProduct = async (productData) => {
+  const { name } = productData;
   const error = validateNewProduct(name);
   if (error) return { status: error.status, data: { message: error.message } };
 
-  const insertId = await productModel.insert(name);
-  const newProduct = await productModel.findById(insertId);
+  const insertId = await productsModel.insert(productData);
+  const newProduct = await productsModel.findById(insertId);
+
   return { status: statusMap.created, data: newProduct };
+};
+
+const updateProduct = async (id, data) => {
+  const { name } = data;
+  const error = validateNewProduct(name);
+  if (error) return { status: error.status, data: { message: error.message } }; 
+
+  const product = await productsModel.findById(id);
+  if (!product) return { status: statusMap.notfound, data: { message: 'Product not found' } };
+  await productsModel.update(id, data);
+  const updatedProduct = await productsModel.findById(id);
+
+  return { status: statusMap.successful, data: updatedProduct };
 };
 
 module.exports = {
   findAll,
   findById,
   insertNewProduct,
+  updateProduct,
 };
