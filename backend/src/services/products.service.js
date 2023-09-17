@@ -12,6 +12,7 @@ const findAll = async () => {
 
 const findById = async (productId) => {
   const product = await productsModel.findById(productId);
+
   if (!product) return { status: statusMap.notfound, data: { message: 'Product not found' } };
   return { status: statusMap.successful, data: product };
 };
@@ -40,9 +41,18 @@ const updateProduct = async (id, data) => {
   return { status: statusMap.successful, data: updatedProduct };
 };
 
+const removeProduct = async (id) => {
+  const product = await productsModel.findById(id);
+  if (!product) return { status: statusMap.notfound, data: { message: 'Product not found' } };
+
+  await productsModel.remove(id);
+  return { status: statusMap.nocontent };
+};
+
 module.exports = {
   findAll,
   findById,
   insertNewProduct,
   updateProduct,
+  removeProduct,
 };

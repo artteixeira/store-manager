@@ -22,4 +22,8 @@ describe('Realizando Testes - SALES CONTROLLER:', function () {
     await salesController.showAllSales(req, res);
     expect(res.status).to.have.been.calledWith(200);
   });
+
+  afterEach(function () {
+    sinon.restore();
+  });
 });
