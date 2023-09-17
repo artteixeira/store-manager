@@ -1,11 +1,5 @@
 const connection = require('./connection');
 
-const {
-  getFormattedColumnNames,
-  getFormattedPlaceholders,
-  getFormattedUpdateColumns,
-} = require('../utils/generateFormattedQuery');
-
 const findAll = async () => {
   const [products] = await connection.execute('SELECT * FROM products');
 
@@ -19,21 +13,19 @@ const findById = async (productId) => {
 };
 
 const insert = async (productData) => {
-  const columns = getFormattedColumnNames(productData);
-  const placeholders = getFormattedPlaceholders(productData);
-  const query = `INSERT INTO products (${columns}) VALUE (${placeholders});`;
+  const { name } = productData;
 
-  const [{ insertId }] = await connection.execute(query, [...Object.values(productData)]);
+  const [{ insertId }] = await connection.execute('INSERT INTO products (name) VALUE (?)', [name]);
   
  return insertId;
 };
 
 const update = async (productId, productData) => {
-  const updatedData = getFormattedUpdateColumns(productData);
+  const { name } = productData;
 
-  const query = `UPDATE products SET ${updatedData} WHERE id = ?`;
+  const query = 'UPDATE products SET name = ? WHERE id = ?';
 
-  return connection.execute(query, [...Object.values(productData), productId]);
+  return connection.execute(query, [name, productId]);
 };
 
 const remove = async (productId) => 
