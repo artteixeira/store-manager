@@ -21,8 +21,17 @@ const insertNewSale = async (req, res) => {
   return res.status(mapStatusHTTP(status)).json(data);
 };
 
+const removeSale = async (req, res) => {
+  const { id } = req.params;
+  const { status, data } = await salesService.removeSale(id);
+
+  if (status !== 204) return res.status(mapStatusHTTP(status)).json(data);
+  return res.sendStatus(mapStatusHTTP(status));
+};
+
 module.exports = {
   showAllSales,
   filterSale,
   insertNewSale,
+  removeSale,
 };

@@ -25,8 +25,8 @@ const findAll = async () => {
   return { status: statusMap.successful, data: sales };
 };
 
-const findById = async (productId) => {
-  const sale = await salesModel.findById(productId);
+const findById = async (saleId) => {
+  const sale = await salesModel.findById(saleId);
   if (sale.length === 0) { 
     return { status: statusMap.notfound, data: { message: 'Sale not found' } }; 
 }
@@ -34,15 +34,26 @@ const findById = async (productId) => {
 };
 
 const insertNewSale = async (saleData) => {
-  const xd = await validateProductsOnSale(saleData);
-  if (!xd) return { status: statusMap.notfound, data: { message: 'Product not found' } };
+  const error = await validateProductsOnSale(saleData);
+  if (!error) return { status: statusMap.notfound, data: { message: 'Product not found' } };
   const insertId = await salesModel.insertNewSale();
   const newSale = await salesModel.insertNewSaleProduct(insertId, saleData);
   return { status: statusMap.created, data: newSale };
+};
+
+const removeSale = async (saleId) => {
+  const sale = await salesModel.findById(saleId);
+  if (sale.length === 0) {
+    return { status: statusMap.notfound, data: { message: 'Sale not found' } };
+  }
+  
+  await salesModel.deleteSale(saleId);
+  return { status: statusMap.nocontent };
 };
 
 module.exports = {
   findAll,
   findById,
   insertNewSale,
+  removeSale,
 };

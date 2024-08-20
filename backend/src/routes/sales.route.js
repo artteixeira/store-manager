@@ -8,4 +8,6 @@ route.get('/:id', salesController.filterSale);
 
 route.post('/', validateSalesFields, salesController.insertNewSale);
 
+route.delete('/:id', salesController.removeSale);
+
 module.exports = route;
